@@ -3,6 +3,7 @@ import java.util.*;
 public class StudentManagement {
     public static Map<String, Student> students = new HashMap<String, Student>();
     public static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
         do {
             System.out.println("********** MENU **********");
@@ -48,8 +49,12 @@ public class StudentManagement {
     }
 
     public static void displayStudent() {
-        for (Map.Entry<String, Student> entry : students.entrySet()) {
-            System.out.println(entry.getValue().toString());
+        if (students.isEmpty()) {
+            System.out.println("Danh sach trong");
+        } else {
+            for (Map.Entry<String, Student> entry : students.entrySet()) {
+                System.out.println(entry.getValue().toString());
+            }
         }
     }
 
@@ -57,17 +62,23 @@ public class StudentManagement {
         System.out.println("Nhap thong tin sinh vien moi");
         Student newStudent = new Student();
         newStudent.inputData();
-        students.put(String.valueOf(students.size()+1), newStudent);
+        students.put(String.valueOf(students.size() + 1), newStudent);
+        System.out.println("Them sinh vien thanh cong");
     }
 
     public static void removeStudent() {
         System.out.println("Nhap ma sinh vien muon xoa: ");
         String id = sc.nextLine();
+        boolean flag = false;
         for (Map.Entry<String, Student> entry : students.entrySet()) {
             if (entry.getValue().getStudentId().equals(id)) {
+                flag = true;
                 students.remove(entry.getKey());
                 break;
             }
+        }
+        if (flag) {
+            System.out.println("Sinh vien khong ton tai");
         }
     }
 
@@ -80,12 +91,13 @@ public class StudentManagement {
         System.out.println("Diem trung binh: " + average);
     }
 
-    public static void printAvgMax(){
+    public static void printAvgMax() {
         List<Student> listStudent = new ArrayList<>(students.values());
         listStudent.sort(Comparator.comparing(Student::getAverage).reversed());
         System.out.println(listStudent.getFirst().getStudentName());
     }
-    public static void printAgeMin(){
+
+    public static void printAgeMin() {
         List<Student> listStudent = new ArrayList<>(students.values());
         listStudent.sort(Comparator.comparing(Student::getAge));
         System.out.println(listStudent.getFirst().getStudentName());
